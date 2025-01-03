@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ destination[1] }}</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS (if needed) -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='travel.css') }}">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand font-weight-bold" href="{{ url_for('index') }}">TravelEssence</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+                    </li>
+                    {% if session.get('role') == 'admin' %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('add_destination') }}">Add Destination</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('list_destinations') }}">Manage Destinations</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('manage_bookings') }}">Manage Bookings</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <form action="{{ url_for('search_destinations') }}" method="get" class="form-inline">
+                            <input type="text" name="query" class="form-control mr-2" placeholder="Search destinations" value="{{ search_query or '' }}">
+                            <button type="submit" class="btn btn-outline-primary">Search</button>
+                        </form>
+                    </li>
+                    {% if session.get('user_id') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('profile') }}">Profile</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('wishlist') }}">Wishlist</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('logout') }}">Logout</a>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('signup') }}">Sign Up</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('login') }}">Login</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mt-5">
+        <div class="bg-white p-4 shadow rounded">
+            <h1 class="text-center text-primary mb-4 font-weight-bold">{{ destination[1] }}</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <img src="{{ url_for('static', filename='images/' ~ destination[3]) }}" alt="{{ destination[1] }}" class="img-fluid rounded shadow-sm mb-3">
+                </div>
+                <div class="col-md-6">
+                    <p class="lead">{{ destination[2] }}</p>
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Address:</strong> {{ destination[4] }}</li>
+                        <li class="list-group-item"><strong>Category:</strong> {{ destination[5] }}</li>
+                        <li class="list-group-item"><strong>Best Season:</strong> {{ destination[6] }}</li>
+                        <li class="list-group-item"><strong>Ticket Price:</strong> ${{ destination[7] }}</li>
+                        <li class="list-group-item"><strong>Activities to Do:</strong> {{ destination[8] }}</li>
+                    </ul>
+                    
+                    {% if session.get('role') == 'user' %}
+                        <div class="booking-section mt-4">
+                            <h4 class="text-success">Book This Destination</h4>
+                            <form action="{{ url_for('book_destination', destination_id=destination[0]) }}" method="post" class="mb-3">
+                                <div class="form-group">
+                                    <label for="booking_date">Select Booking Date:</label>
+                                    <input type="date" id="booking_date" name="booking_date" class="form-control" required>
+                                </div>
+                                <button type="submit" class="btn btn-success btn-block">Book Now</button>
+                            </form>
+                            <form action="{{ url_for('add_to_wishlist', destination_id=destination[0]) }}" method="post">
+                                <button type="submit" class="btn btn-outline-success btn-block">Add to Wishlist</button>
+                            </form>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="text-center mt-4">
+                <a href="{{ url_for('index') }}" class="btn btn-outline-primary">Back to Home</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Popper.js -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

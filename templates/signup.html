@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | TravelEssence</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body class="bg-secondary">
+
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="row w-100">
+            <!-- Left Column: Image with Overlay -->
+            <div class="col-md-6 d-none d-md-flex position-relative p-0">
+                <img src="{{ url_for('static', filename='images/three.jpg') }}" alt="Sign Up Image" 
+                     class="img-fluid h-100 w-100" style="object-fit: cover; filter: brightness(70%);">
+                <div class="position-absolute text-center text-light w-100 p-4" style="top: 50%; transform: translateY(-50%);">
+                    <h2 class="display-4 font-weight-bold">Join TravelEssence</h2>
+                    <p class="lead">Create your account and start exploring the world with ease!</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Sign Up Form -->
+            <div class="col-md-6 d-flex justify-content-center align-items-center bg-light p-5">
+                <div class="card shadow-lg border-0 p-4" style="width: 100%; max-width: 400px; border-radius: 10px;">
+                    <h1 class="text-center text-success mb-4"><i class="fas fa-user-plus"></i> Sign Up</h1>
+                    <form action="{{ url_for('signup') }}" method="post">
+                        <!-- Email Input -->
+                        <div class="form-floating mb-3">
+                            <input type="email" id="email" name="email" class="form-control" placeholder="Enter your email" required>
+                            <label for="email">Email</label>
+                        </div>
+                        <!-- Username Input -->
+                        <div class="form-floating mb-3">
+                            <input type="text" id="username" name="username" class="form-control" placeholder="Choose a username" required>
+                            <label for="username">Username</label>
+                        </div>
+                        <!-- Password Input -->
+                        <div class="form-floating mb-3">
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Create a password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <!-- Sign Up Button -->
+                        <button type="submit" class="btn btn-success btn-block btn-lg shadow-sm">Sign Up</button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p>Already have an account? <a href="{{ url_for('login') }}" class="text-success font-weight-bold">Log in here</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

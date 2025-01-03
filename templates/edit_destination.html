@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Destination</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='travel.css') }}">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <a class="navbar-brand" href="{{ url_for('index') }}">TravelEssence</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('add_destination') }}">Add Destination</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_destinations') }}">Manage Destinations</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Edit Destination Form -->
+    <div class="container mt-5">
+        <div class="form-container bg-white p-5 rounded shadow">
+            <h1 class="text-center mb-4">Edit Destination</h1>
+            <form action="{{ url_for('edit_destination', id=destination[0]) }}" method="post" enctype="multipart/form-data">
+                <!-- Name Field -->
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" class="form-control" value="{{ destination[1] }}" required>
+                </div>
+
+                <!-- Description Field -->
+                <div class="form-group">
+                    <label for="description">Description:</label>
+                    <textarea name="description" class="form-control" rows="5" required>{{ destination[2] }}</textarea>
+                </div>
+
+                <!-- Address Field -->
+                <div class="form-group">
+                    <label for="address">Address:</label>
+                    <input type="text" name="address" class="form-control" value="{{ destination[4] }}" required>
+                </div>
+
+                <!-- Category Field -->
+                <div class="form-group">
+                    <label for="category">Category:</label>
+                    <input type="text" name="category" class="form-control" value="{{ destination[5] }}" required>
+                </div>
+
+                <!-- Best Season Field -->
+                <div class="form-group">
+                    <label for="best_season">Best Season:</label>
+                    <input type="text" name="best_season" class="form-control" value="{{ destination[6] }}" required>
+                </div>
+
+                <!-- Ticket Price Field -->
+                <div class="form-group">
+                    <label for="ticket_price">Ticket Price:</label>
+                    <input type="text" name="ticket_price" class="form-control" value="{{ destination[7] }}" required>
+                </div>
+
+                <!-- Activities to Do Field -->
+<div class="form-group">
+    <label for="activities">Activities to Do:</label>
+    <textarea name="activities" class="form-control" rows="4" required>{{ destination[8] }}</textarea>
+</div>
+
+
+                <!-- Image Field -->
+                <div class="form-group">
+                    <label for="image">Image:</label>
+                    <input type="file" name="image" class="form-control-file" accept="image/*">
+                    <!-- Display existing image if available -->
+                    {% if destination[3] %}
+                        <div class="mt-3">
+                            <label>Current Image:</label><br>
+                            <img src="{{ url_for('static', filename='images/' + destination[3]) }}" alt="Current Image" width="150">
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Submit Button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary btn-lg">Update Destination</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

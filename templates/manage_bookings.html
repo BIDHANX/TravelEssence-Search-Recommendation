@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Bookings</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='travel.css') }}">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+        <a class="navbar-brand" href="{{ url_for('index') }}">TravelEssence</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('add_destination') }}">Add Destination</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('list_destinations') }}">Manage Destinations</a></li>
+                <li class="nav-item active"><a class="nav-link" href="{{ url_for('manage_bookings') }}">Manage Bookings</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash message for Pending Bookings Count -->
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <div class="alert alert-info alert-dismissible fade show m-4" role="alert">
+                {% for message in messages %}
+                    <strong>{{ message }}</strong>
+                {% endfor %}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Manage Bookings Section -->
+    <div class="container mt-5">
+        <h1 class="text-center mb-4">Manage Bookings</h1>
+        <p class="text-center text-info">You have {{ pending_bookings_count }} pending booking(s).</p> <!-- Show Pending Count -->
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <table class="table table-bordered table-striped">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>User</th>
+                            <th>Destination</th>
+                            <th>Booking Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for booking in bookings %}
+                            <tr>
+                                <td>{{ booking[1] }}</td>
+                                <td>{{ booking[2] }}</td>
+                                <!-- <td>{{ booking[4] | date('yyyy-mm-dd') }}</td>  -->
+                                <td>{{ booking[4] | date('%Y-%m-%d') }}</td> 
+                                <td>{{ booking[3] }}</td>
+                                <td>
+                                    {% if booking[3] == 'Pending' %}
+                                        <form action="{{ url_for('update_booking', booking_id=booking[0], status='Approved') }}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                        </form>
+                                        <form action="{{ url_for('update_booking', booking_id=booking[0], status='Declined') }}" method="post" style="display:inline;">
+                                            <button type="submit" class="btn btn-danger btn-sm">Decline</button>
+                                        </form>
+                                    {% else %}
+                                        {{ booking[3] }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

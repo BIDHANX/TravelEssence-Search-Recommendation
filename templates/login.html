@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | TravelEssence</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Optional FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Custom button and link colors */
+        .btn-login {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+        }
+
+        .btn-login:hover {
+            background-color: #218838;
+        }
+
+        .text-login-link {
+            color: #28a745;
+        }
+
+        .text-login-link:hover {
+            color: #218838;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body class="bg-secondary">
+
+    <div class="container-fluid d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+        <div class="row w-100">
+            <!-- Left Column: Image with Overlay -->
+            <div class="col-md-6 d-none d-md-flex position-relative p-0">
+                <img src="{{ url_for('static', filename='images/three.jpg') }}" alt="TravelEssence" 
+                     class="img-fluid h-100 w-100" style="object-fit: cover; filter: brightness(70%);">
+                <div class="position-absolute text-center text-light w-100 p-4" style="top: 50%; transform: translateY(-50%);">
+                    <h2 class="display-4 font-weight-bold">Welcome Back to TravelEssence</h2>
+                    <p class="lead">Log in to continue your journey with us!</p>
+                </div>
+            </div>
+
+            <!-- Right Column: Login Form -->
+            <div class="col-md-6 d-flex justify-content-center align-items-center bg-light p-5">
+                <div class="card shadow-lg border-0 p-4" style="width: 100%; max-width: 400px; border-radius: 10px;">
+                    <h1 class="text-center text-success mb-4"><i class="fas fa-sign-in-alt"></i> Log In</h1>
+                    <form action="{{ url_for('login') }}" method="post">
+                        <!-- Username Input -->
+                        <div class="form-floating mb-3">
+                            <input type="text" id="username" name="username" class="form-control" placeholder="Enter your username" required>
+                            <label for="username">Username</label>
+                        </div>
+                        <!-- Password Input -->
+                        <div class="form-floating mb-3">
+                            <input type="password" id="password" name="password" class="form-control" placeholder="Enter your password" required>
+                            <label for="password">Password</label>
+                        </div>
+                        <!-- Remember Me -->
+                        <div class="form-check mb-4">
+                            <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                            <label class="form-check-label" for="remember">Remember me</label>
+                        </div>
+                        <!-- Login Button -->
+                        <button type="submit" class="btn btn-login btn-block btn-lg shadow-sm">Log In</button>
+                    </form>
+
+                    <div class="text-center mt-4">
+                        <p>Don’t have an account? <a href="{{ url_for('signup') }}" class="text-login-link font-weight-bold">Sign up here</a>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+/* index */
+/* General Styles */
+body {
+    background-color: #fdf6f0; /* Pastel background matching signup */
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: #ffffff; /* White background for contrast */
+    border-bottom: 1px solid #e8e8e8;
+}
+
+.navbar-brand {
+    color: #28a745 !important;
+}
+
+.navbar-nav .nav-link {
+    color: #555555 !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #28a745 !important;
+}
+
+/* Flash Messages */
+.alert {
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Main Content */
+h1 {
+    font-size: 2.5rem;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.card {
+    border: none;
+    border-radius: 8px;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333333;
+}
+
+/* Buttons */
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-outline-success {
+    border-color: #28a745;
+    color: #28a745;
+}
+
+.btn-outline-success:hover {
+    background-color: #28a745;
+    color: #ffffff;
+}
+
+/* Footer */
+footer {
+    background-color: #343a40;
+    color: #f8f9fa;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+footer span.text-danger {
+    color: #ff6b6b;
+}
+
+
+

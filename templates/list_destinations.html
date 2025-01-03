@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Destinations</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='list_destinations.css') }}">
+</head>
+<body class="bg-light">
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+
+        <a class="navbar-brand" href="{{ url_for('index') }}">TravelEssence</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Home</a></li>
+                {% if session.get('role') == 'admin' %}
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('add_destination') }}">Add Destination</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('list_destinations') }}">Manage Destinations</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('manage_bookings') }}">Manage Bookings</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Search Results -->
+    {% if search_query %}
+        <h2 class="text-center">Search Results for "{{ search_query }}"</h2>
+
+        {% if main_result %}
+            <div class="destination-item card mb-4 shadow-sm">
+                <div class="row no-gutters">
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename='images/' + main_result[3]) }}" class="card-img" alt="{{ main_result[1] }}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h2 class="card-title">{{ main_result[1] }}</h2>
+                            <p class="card-text">{{ main_result[2] }}</p>
+                            <p class="card-text"><strong>Address:</strong> {{ main_result[4] }}</p>
+                            <p class="card-text"><strong>Category:</strong> {{ main_result[5] }}</p>
+                            <p class="card-text"><strong>Best Season:</strong> {{ main_result[6] }}</p>
+                            <p class="card-text"><strong>Ticket Price:</strong> {{ main_result[7] }}</p>
+                            <p class="card-text"><strong>Activities to Do:</strong> {{ main_result[8] }}</p>
+
+                            {% if session.get('role') == 'admin' %}
+                                <a href="{{ url_for('edit_destination', id=main_result[0]) }}" class="btn btn-warning">Edit</a>
+                                <form action="{{ url_for('delete_destination', id=main_result[0]) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            {% elif session.get('role') == 'user' %}
+                                <form action="{{ url_for('book_destination', destination_id=main_result[0]) }}" method="post" onsubmit="return confirmBooking(event)">
+                                    <button type="submit" class="btn btn-success">Book</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center">No results found for "{{ search_query }}".</p>
+        {% endif %}
+
+        <!-- Recommended Destinations -->
+        {% if recommended_destinations %}
+            <h3 class="text-center">Recommended Destinations:</h3>
+            <div class="row">
+                {% for destination in recommended_destinations %}
+                    <div class="col-md-4">
+                        <div class="destination-item card mb-4 shadow-sm">
+                            <img src="{{ url_for('static', filename='images/' + destination[3]) }}" class="card-img-top" alt="{{ destination[1] }}">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ destination[1] }}</h5>
+                                <p class="card-text">{{ destination[2] }}</p>
+                                <p class="card-text"><strong>Address:</strong> {{ destination[4] }}</p>
+                                <p class="card-text"><strong>Category:</strong> {{ destination[5] }}</p>
+                                <p class="card-text"><strong>Best Season:</strong> {{ destination[6] }}</p>
+                                <p class="card-text"><strong>Ticket Price:</strong> {{ destination[7] }}</p>
+                                <p class="card-text"><strong>Activities to Do:</strong> {{ destination[8] }}</p>
+
+                                {% if session.get('role') == 'admin' %}
+                                    <a href="{{ url_for('edit_destination', id=destination[0]) }}" class="btn btn-warning">Edit</a>
+                                    <form action="{{ url_for('delete_destination', id=destination[0]) }}" method="post" style="display:inline;">
+                                        <button type="submit" class="btn btn-danger">Delete</button>
+                                    </form>
+                                {% elif session.get('role') == 'user' %}
+                                    <form action="{{ url_for('book_destination', destination_id=destination[0]) }}" method="post" onsubmit="return confirmBooking(event)">
+                                        <button type="submit" class="btn btn-success">Book</button>
+                                    </form>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p class="text-center">No recommendations found.</p>
+        {% endif %}
+    {% else %}
+        <!-- Display All Destinations when no search query -->
+        <h3 class="text-center">All Destinations</h3>
+        <div class="row">
+            {% for destination in destinations %}
+                <div class="col-md-4">
+                    <div class="destination-item card mb-4 shadow-sm">
+                        <img src="{{ url_for('static', filename='images/' + destination[3]) }}" class="card-img-top" alt="{{ destination[1] }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ destination[1] }}</h5>
+                            <p class="card-text">{{ destination[2] }}</p>
+                            <p class="card-text"><strong>Address:</strong> {{ destination[4] }}</p>
+                            <p class="card-text"><strong>Category:</strong> {{ destination[5] }}</p>
+                            <p class="card-text"><strong>Best Season:</strong> {{ destination[6] }}</p>
+                            <p class="card-text"><strong>Ticket Price:</strong> {{ destination[7] }}</p>
+                            <p class="card-text"><strong>Activities to Do:</strong> {{ destination[8] }}</p>
+
+                            {% if session.get('role') == 'admin' %}
+                                <a href="{{ url_for('edit_destination', id=destination[0]) }}" class="btn btn-warning">Edit</a>
+                                <form action="{{ url_for('delete_destination', id=destination[0]) }}" method="post" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger">Delete</button>
+                                </form>
+                            {% elif session.get('role') == 'user' %}
+                                <form action="{{ url_for('book_destination', destination_id=destination[0]) }}" method="post" onsubmit="return confirmBooking(event)">
+                                    <button type="submit" class="btn btn-success">Book</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    
+    <!-- JavaScript for booking confirmation -->
+    <script>
+        function confirmBooking(event) {
+            event.preventDefault();
+            var destinationName = event.target.closest('form').querySelector('button').textContent.trim();
+            var confirmed = confirm("Are you sure you want to book the destination: " + destinationName + "?");
+            if (confirmed) {
+                event.target.closest('form').submit();
+            }
+        }
+    </script>
+
+    <!-- Bootstrap JS & jQuery -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
